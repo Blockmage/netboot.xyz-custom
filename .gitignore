@@ -1,0 +1,10 @@
+*
+!*/
+!.gitignore
+!/*.example
+!/*.ipxe
+!/*.md
+!/*.py
+!/*.txt
+!/*Dockerfile
+!/scripts/**/*
