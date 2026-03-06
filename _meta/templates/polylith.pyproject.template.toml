@@ -1,0 +1,34 @@
+[build-system]
+  build-backend = "hatchling.build"
+  requires      = [ "hatch-polylith-bricks", "hatchling" ]
+
+[project]
+  license         = { text = "Apache-2.0" }
+  name            = "${SUB_PROJECT_NAME}"
+  readme          = "README.md"
+  requires-python = ">=3.13"
+  version         = "${SUB_PROJECT_VERS}"
+
+  authors = [
+    { email = "developer.xat0h@mail-sl.blockmage.dev", name = "Blockmage Developer" },
+  ]
+
+  dependencies = [  ]
+
+  [project.urls]
+    github   = "https://github.com/Blockmage/${SUB_PROJECT_NAME}"
+    homepage = "https://blockmage.dev"
+
+[tool.hatch.metadata]
+  allow-direct-references = true
+
+[tool.polylith.bricks]
+  # ../../bases/${POLY_NAMESPACE}/<base>           = ${SUB_PROJECT_NAME}/<base>
+  # ../../components/${POLY_NAMESPACE}/<component> = ${SUB_PROJECT_NAME}/<component>
+
+[tool.polylith.build]
+
+[tool.hatch.build.hooks.polylith-bricks]
+
+[tool.hatch.build.targets.wheel]
+  packages = [ "${SUB_PROJECT_NAME}" ]

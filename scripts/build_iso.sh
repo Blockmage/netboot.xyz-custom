@@ -2,7 +2,7 @@
 
 set -e
 
-HASH=$(openssl passwd -6 -stdin <<<"${ROOT_PASS:?}")
+HASH="$(openssl passwd -6 -stdin <<<"${ROOT_PASS:?}")"
 
 PKG_LIST=(
   lvm2

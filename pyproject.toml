@@ -1,0 +1,28 @@
+[project]
+  description     = "Python scripts for building a custom Linux ISO image for use with Netboot.xyz."
+  name            = "netboot-builder"
+  readme          = "README.md"
+  requires-python = ">=3.13"
+  version         = "0.1.0"
+
+  authors = [
+    { email = "69873938+Alchemyst0x@users.noreply.github.com", name = "Alchemyst" },
+  ]
+
+  dependencies = [
+    "msgspec[toml,yaml]>=0.20.0",
+    "onepassword-sdk>=0.4.0",
+    "python-dotenv>=1.2.1",
+  ]
+
+  [project.scripts]
+    nbb-build = "netboot_builder:main"
+
+[dependency-groups]
+  dev = [
+    "devtools>=0.12.2",
+  ]
+
+[build-system]
+  build-backend = "uv_build"
+  requires      = [ "uv_build>=0.10.6,<0.11.0" ]

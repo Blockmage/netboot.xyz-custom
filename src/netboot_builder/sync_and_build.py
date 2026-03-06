@@ -1,20 +1,14 @@
-"""Sync the ISO builder workspace to a remote PVE node and execute the build."""
-
 import os
 import subprocess
 import sys
 from getpass import getpass
 
-REMOTE_USER = 'root'
-"""PVE node user with Docker permissions (also the user used for SSH)."""
-REMOTE_HOST = 'pve3-guest1'
-"""PVE node IP/Hostname (same as is configured in `~/.ssh` where the this script is being executed)."""
-REMOTE_PATH = '/tmp/iso-builder'
-"""Directory on the PVE node in which to host the build files."""
-ISO_FILE_NAME = 'rescue-deb-amd64.iso'
-"""Name of the resulting ISO file."""
-RSYNC_EXCLUDE_FILE = 'rsync-exclude.txt'
-"""Path of the rsync exclusions file."""
+from dotenv import load_dotenv
+
+from .config import Config
+
+load_dotenv()
+cfg = Config()
 
 
 def print_log(*s: str) -> None:
@@ -24,21 +18,21 @@ def print_log(*s: str) -> None:
 
 def run_remote_command(command: str) -> None:
     """Execute a command on the remote host via SSH."""
-    ssh_cmd = ['ssh', f'{REMOTE_USER}@{REMOTE_HOST}', command]
+    ssh_cmd = ['ssh', f'{cfg.remote_user}@{cfg.remote_host}', command]
     subprocess.run(ssh_cmd, check=True)
 
 
 def sync_workspace() -> None:
     """Sync the local directory to the remote host, excluding output."""
-    print_log(f'--- Syncing workspace to {REMOTE_HOST}')
+    print_log(f'--- Syncing workspace to {cfg.remote_host}')
     rsync_cmd = [
         'rsync',
         '-avz',
         '--delete',
         '--exclude-from',
-        f'{RSYNC_EXCLUDE_FILE}',
+        f'{cfg.rsync_exclude_file}',
         './',
-        f'{REMOTE_USER}@{REMOTE_HOST}:{REMOTE_PATH}',
+        f'{cfg.remote_user}@{cfg.remote_host}:{cfg.remote_path}',
     ]
     subprocess.run(rsync_cmd, check=True)
 
@@ -47,11 +41,11 @@ def build_iso_remotely(root_pass: str, ssh_key: str) -> None:
     """Trigger the Docker build on the remote PVE node."""
     print_log('--- Starting Docker build on remote')
     docker_cmd = (
-        f'cd {REMOTE_PATH} && '
+        f'cd {cfg.remote_path} && '
         f'docker build -t iso-builder . && '
-        f'mkdir -p {REMOTE_PATH}/output && '
+        f'mkdir -p {cfg.remote_path}/output && '
         f'docker run --rm --privileged '
-        f'-v {REMOTE_PATH}/output:/output '
+        f'-v {cfg.remote_path}/output:/output '
         f"-e ROOT_PASS='{root_pass}' "
         f"-e SSH_KEY='{ssh_key}' "
         f'iso-builder'
@@ -65,8 +59,8 @@ def fetch_iso() -> None:
     os.makedirs('./output', exist_ok=True)
     scp_cmd = [
         'scp',
-        f'{REMOTE_USER}@{REMOTE_HOST}:{REMOTE_PATH}/output/{ISO_FILE_NAME}',
-        f'./output/{ISO_FILE_NAME}',
+        f'{cfg.remote_user}@{cfg.remote_host}:{cfg.remote_path}/output/{cfg.iso_file_name}',
+        f'./output/{cfg.iso_file_name}',
     ]
     subprocess.run(scp_cmd, check=True)
 
@@ -80,7 +74,7 @@ def main() -> None:
         sync_workspace()
         build_iso_remotely(root_pass, ssh_key)
         fetch_iso()
-        print_log(f"\n--- Success: ISO is located in './output/{ISO_FILE_NAME}'")
+        print_log(f"\n--- Success: ISO is located in './output/{cfg.iso_file_name}'")
     except subprocess.CalledProcessError as err:
         redacted_err = str(err).replace(root_pass, '***')
         str_div = '\n' + ('-' * 80) + '\n'

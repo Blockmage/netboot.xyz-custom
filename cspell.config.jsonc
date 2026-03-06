@@ -1,0 +1,138 @@
+{
+  "language": "en",
+  "readonly": true,
+  "useGitignore": false,
+  "allowCompoundWords": false,
+  "ignoreRandomStrings": true,
+
+  "ignorePaths": [
+    "**/.devenv/",
+    "**/.git/{index,*refs,*HEAD}",
+    "**/.git/{info,lfs,logs,refs,objects}/**",
+    "**/.venv/",
+    "**/*-lock.*",
+    "**/*.env",
+    "**/*.lock",
+    "**/node_modules/"
+  ],
+
+  "ignoreRegExpList": [
+    // 1Password secret references
+    "\\b([\\da-z]{26}|[\\dA-Z]{26})\\b",
+    // Full-caps acronyms of 2-5 length
+    "\\b[A-Z]{2,5}\\b",
+    // Variable names with underscores (e.g., 'INSTALL_CROC')
+    "\\b_?[A-Z]+(_?)[A-Z0-9_]+\\b",
+    // Partial words in words with bracketed letters (e.g., '[Dd]esktop')
+    "(\\[[A-Za-z]{1,}\\])([a-zA-Z]+)?\\b",
+    // File extensions (e.g., '.icns', '.ovpn', '.config.json' etc.)
+    "(\\.[a-zA-Z]{1,6}((\\.[a-zA-Z]{1,4})?)\\b)",
+    // SSH public keys
+    "(ssh-(rsa|dss|ed25519|ecdsa-[a-z0-9]+))\\s+([A-Za-z0-9+\\/]+={0,2})",
+    // Azure/OpenAI assistant IDs (e.g. 'asst_7AZSrv5I3XzjUqWS40X5UgRr')
+    "\\b(asst|thread|msg|run|file)_([A-Za-z0-9]{24})\\b"
+  ],
+
+  "dictionaryDefinitions": [
+    {
+      "addWords": true,
+      "description": "Workspace Custom Wordlist ('_meta/config/cspell.txt')",
+      "name": "Workspace Custom Wordlist",
+      "path": "_meta/config/cspell.txt"
+    },
+    {
+      "addWords": true,
+      "description": "User Custom Wordlist ('~/.config/cspell/cspell.txt')",
+      "name": "User Custom Wordlist",
+      "path": "~/.config/cspell/cspell.txt"
+    }
+  ],
+
+  "dictionaries": [
+    // Custom dictionaries
+    "Workspace Custom Wordlist",
+    "User Custom Wordlist",
+    // Dictionaries provided by cspell
+    "ada",
+    "aws",
+    "bash",
+    "city-names-finland",
+    "clojure",
+    "coding-compound-terms",
+    "companies",
+    "computing-acronyms",
+    "cpp",
+    "cryptocurrencies",
+    "csharp",
+    "css",
+    "dart",
+    "data-science-models",
+    "data-science-tools",
+    "data-science",
+    "de-de",
+    "django",
+    "docker",
+    "dotnet",
+    "elisp",
+    "elixir",
+    "en_us",
+    "en-common-misspellings",
+    "en-shared",
+    "en-us-common-misspellings",
+    "filetypes",
+    "flutter",
+    "fonts",
+    "fsharp",
+    "fullstack",
+    "game-development",
+    "gaming-terms",
+    "gis",
+    "git",
+    "golang",
+    "google",
+    "grc",
+    "haskell",
+    "html-symbol-entities",
+    "html",
+    "java",
+    "julia",
+    "k8s",
+    "kotlin",
+    "la",
+    "latex",
+    "lorem-ipsum",
+    "lua",
+    "makefile",
+    "medical terms",
+    "mnemonics",
+    "monkeyc",
+    "networking-terms",
+    "node",
+    "npm",
+    "people-names",
+    "php",
+    "pokemon",
+    "powershell",
+    "public-licenses",
+    "python-common",
+    "python",
+    "r",
+    "redis",
+    "ruby",
+    "rust",
+    "scala",
+    "scientific-terms-us",
+    "shellscript",
+    "software-term-suggestions",
+    "software-tools",
+    "softwareTerms",
+    "sql",
+    "svelte",
+    "swift",
+    "terraform",
+    "typescript",
+    "vim",
+    "web-services",
+    "win32"
+  ]
+}
